@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎓 國小生字學習樂園 🎓</title>
+  <style>
+    :root{
+      --primary: #4CAF50;
+      --primary-light: #81C784;
+      --secondary: #FF9800;
+      --accent: #E91E63;
+      --bg: #FFF8E1;
+      --card: #FFFFFF;
+      --text: #2E2E2E;
+      --text-light: #666666;
+      --border: #E0E0E0;
+      --success: #4CAF50;
+      --warning: #FF9800;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #FFF8E1 0%, #F3E5F5 100%);
+      color: var(--text);
+      font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+      min-height: 100vh;
+    }
+    
+    /* 標題區域 */
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .header .subtitle {
+      margin: 10px 0 0;
+      font-size: 18px;
+      opacity: 0.9;
+    }
+    
+    /* 主要容器 */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+    
+    /* 選擇卡片 */
+    .selection-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+    }
+    
+    .selection-title {
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 25px;
+      text-align: center;
+      font-weight: bold;
+    }
+    
+    /* 選擇按鈕區域 */
+    .selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    
+    .selection-group {
+      text-align: center;
+    }
+    
+    .selection-group label {
+      display: block;
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    
+    .selection-group select {
+      width: 100%;
+      padding: 15px;
+      font-size: 20px;
+      border: 3px solid var(--border);
+      border-radius: 15px;
+      background: white;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .selection-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+    
+    .selection-group select:hover {
+      border-color: var(--primary-light);
+    }
+    
+    /* 統計資訊 */
+    .stats {
+      background: var(--primary);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    
+    /* 結果卡片 */
+    .result-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+    }
+    
+    .result-title {
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+    
+    .lesson-info {
+      background: linear-gradient(135deg, #E8F5E8 0%, #F0F8FF 100%);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+      text-align: center;
+      border: 2px solid var(--primary-light);
+    }
+    
+    .lesson-info p {
+      margin: 0;
+      font-size: 18px;
+      color: var(--text);
+    }
+    
+    /* 連結區域 */
+    .links-section {
+      background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+    
+    .link-button {
+      display: inline-block;
+      background: var(--secondary);
+      color: white;
+      padding: 15px 25px;
+      margin: 10px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .link-button:hover {
+      background: #F57C00;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    
+    .link-button.primary {
+      background: var(--primary);
+    }
+    
+    .link-button.primary:hover {
+      background: #388E3C;
+    }
+    
+    .link-button.accent {
+      background: var(--accent);
+    }
+    
+    .link-button.accent:hover {
+      background: #C2185B;
+    }
+    
+    /* 生字表格 */
+    .words-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .words-table th {
+      background: var(--primary);
+      color: white;
+      padding: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    
+    .words-table td {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      font-size: 18px;
+    }
+    
+    .words-table td:first-child {
+      font-size: 36px;
+      font-weight: bold;
+      color: var(--primary);
+      background: #F8F9FA;
+    }
+    
+    .words-table td:last-child {
+      font-size: 16px;
+    }
+    
+    .words-table a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 20px;
+      background: #FFE0E6;
+      transition: all 0.3s ease;
+    }
+    
+    .words-table a:hover {
+      background: var(--accent);
+      color: white;
+    }
+    
+    /* 頁尾 */
+    .footer {
+      background: var(--text);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      margin-top: 50px;
+    }
+    
+    .footer small {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+    
+    .footer a {
+      color: #81C784;
+      text-decoration: none;
+    }
+    
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* 動畫效果 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 24px;
+      }
+      
+      .header .subtitle {
+        font-size: 16px;
+      }
+      
+      .selection-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .selection-group select {
+        font-size: 18px;
+        padding: 12px;
+      }
+      
+      .words-table th,
+      .words-table td {
+        padding: 15px 10px;
+        font-size: 16px;
+      }
+      
+      .words-table td:first-child {
+        font-size: 28px;
+      }
+      
+      .link-button {
+        display: block;
+        margin: 10px 0;
+        font-size: 16px;
+        padding: 12px 20px;
+      }
+    }
+    
+    /* 載入動畫 */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 20px;
+      color: var(--text-light);
+    }
+    
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- 標題區域 -->
+  <header class="header">
+    <h1>🎓 國小生字學習樂園 🎓</h1>
+    <p class="subtitle">📚 選擇你的年級和課本，一起學習生字吧！</p>
+  </header>
+
+  <!-- 主要內容 -->
+  <div class="container">
+    <!-- 選擇區域 -->
+    <div class="selection-card fade-in">
+      <h2 class="selection-title">🎯 請選擇學習內容</h2>
+      
+      <div class="selection-grid">
+        <div class="selection-group">
+          <label>📅 學期</label>
+          <select id="term">
+            <option value="">請選擇學期</option>
+          </select>
+        </div>
+        
+        <div class="selection-group">
+          <label>👦👧 年級</label>
+          <select id="grade">
+            <option value="">請選擇年級</option>
+          </select>
+        </div>
+        
+        <div class="selection-group">
+          <label>📖 版本</label>
+          <select id="publisher">
+            <option value="">請選擇版本</option>
+          </select>
+        </div>
+        
+        <div class="selection-group">
+          <label>📝 課別</label>
+          <select id="lesson">
+            <option value="">請選擇課別</option>
+          </select>
+        </div>
+      </div>
+      
+      <div id="stats" class="stats" style="display: none;"></div>
+    </div>
+
+    <!-- 結果區域 -->
+    <div id="result-section" class="result-card fade-in" style="display: none;">
+      <h2 class="result-title">📚 學習內容</h2>
+      
+      <!-- 連結區域 -->
+      <div id="links" class="links-section"></div>
+      
+      <!-- 生字表格 -->
+      <table id="words-table" class="words-table">
+        <thead>
+          <tr>
+            <th>🔤 生字</th>
+            <th>📖 成語學習</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 頁尾 -->
+  <footer class="footer">
+    <small>
+      🏫 生字資料來源：<a href="https://pedia.cloud.edu.tw/Home/CopyRight" target="_blank">教育雲「教育百科」</a><br>
+      📚 成語學習：<a href="https://dict.idioms.moe.edu.tw/pageView.jsp?ID=44&la=0&webMd=2" target="_blank">教育部《成語典》</a><br>
+      ✍️ 筆順練習：<a href="https://stroke-order.learningweb.moe.edu.tw/page.jsp?ID=52" target="_blank">教育部《國字標準字體筆順學習網》</a><br>
+      💡 本網站僅供學習使用，所有內容版權歸原網站所有
+    </small>
+  </footer>
+
+  <script>
+    // ===== 設定資料 =====
+    const TERMS = [
+      { label: "114 學年上學期", code: "11401" }
+    ];
+    
+    const PUB_CODE = { "南一": "0102", "康軒": "0103", "翰林": "0101" };
+    const GRADE_CODE = { "一年級": "01", "二年級": "02", "三年級": "03", "四年級": "04", "五年級": "05", "六年級": "06" };
+    
+    const CATALOG = {
+      "114 學年上學期": {
+        "一年級": {
+          "康軒": "data/11401/data_11401_康軒_一年級.json",
+          "南一": "data/11401/data_11401_南一_一年級.json",
+          "翰林": "data/11401/data_11401_翰林_一年級.json"
+        },
+        "二年級": {
+          "康軒": "data/11401/data_11401_康軒_二年級.json",
+          "南一": "data/11401/data_11401_南一_二年級.json",
+          "翰林": "data/11401/data_11401_翰林_二年級.json"
+        },
+        "三年級": {
+          "康軒": "data/11401/data_11401_康軒_三年級.json",
+          "南一": "data/11401/data_11401_南一_三年級.json",
+          "翰林": "data/11401/data_11401_翰林_三年級.json"
+        },
+        "四年級": {
+          "康軒": "data/11401/data_11401_康軒_四年級.json",
+          "南一": "data/11401/data_11401_南一_四年級.json",
+          "翰林": "data/11401/data_11401_翰林_四年級.json"
+        },
+        "五年級": {
+          "康軒": "data/11401/data_11401_康軒_五年級.json",
+          "南一": "data/11401/data_11401_南一_五年級.json",
+          "翰林": "data/11401/data_11401_翰林_五年級.json"
+        },
+        "六年級": {
+          "康軒": "data/11401/data_11401_康軒_六年級.json",
+          "南一": "data/11401/data_11401_南一_六年級.json",
+          "翰林": "data/11401/data_11401_翰林_六年級.json"
+        }
+      }
+    };
+    
+    // ===== 工具函式 =====
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+    
+    function termCode(label) {
+      const t = TERMS.find(x => x.label === label);
+      return t ? t.code : "";
+    }
+    
+    function parseTerm(label) {
+      if (!label) return { year: 0, sem: 1 };
+      let idx = label.indexOf('學年度');
+      if (idx < 0) idx = label.indexOf('學年');
+      const year = idx > 0 ? parseInt(label.slice(0, idx).trim(), 10) : 0;
+      const sem = (label.includes('上學期') || label.includes('第一學期')) ? 1 : 2;
+      return { year, sem };
+    }
+    
+    function termsSortedDesc() {
+      return TERMS.map(t => t.label).sort((a, b) => {
+        const A = parseTerm(a), B = parseTerm(b);
+        if (B.year !== A.year) return B.year - A.year;
+        return B.sem - A.sem;
+      });
+    }
+    
+    function lessonNo2(label) {
+      const m = label.match(/^第(\d{1,2})課/);
+      return m ? m[1].padStart(2, '0') : '01';
+    }
+    
+    function idiomLink(ch) {
+      return `https://dict.idioms.moe.edu.tw/idiomList.jsp?idiom=${encodeURIComponent(ch)}`;
+    }
+    
+    function expectedLessonsCount(grade, pub) {
+      if (grade === '一年級') {
+        return (pub === '康軒') ? 6 : 7;
+      }
+      return 12;
+    }
+    
+    function pediaId(termLabel, gradeLabel, pubLabel, lessonLabel) {
+      const pub = PUB_CODE[pubLabel] || "";
+      const grade = GRADE_CODE[gradeLabel] || "";
+      const tcode = termCode(termLabel) || "";
+      const les = lessonNo2(lessonLabel);
+      return `${pub}${grade}${tcode}${les}`;
+    }
+    
+    // ===== 資料載入 =====
+    const CACHE = new Map();
+    
+    async function ensureDataset(term, grade, pub) {
+      const key = `${term}|${grade}|${pub}`;
+      if (CACHE.has(key)) return CACHE.get(key);
+      
+      let data = {};
+      const url = (CATALOG?.[term]?.[grade]?.[pub]) || (CATALOG?.[termCode(term)]?.[grade]?.[pub]);
+      
+      if (url) {
+        try {
+          const res = await fetch(encodeURI(url), { cache: 'no-cache' });
+          if (res.ok) data = await res.json();
+        } catch (e) {
+          console.error('載入資料失敗:', e);
+        }
+      }
+      
+      CACHE.set(key, data);
+      return data;
+    }
+    
+    // ===== UI 控制 =====
+    function resetSelect(id) {
+      $(id).innerHTML = '<option value="">請選擇...</option>';
+    }
+    
+    function showLoading() {
+      const resultSection = $('#result-section');
+      resultSection.style.display = 'block';
+      resultSection.innerHTML = '<div class="loading">正在載入學習內容...</div>';
+    }
+    
+    function init() {
+      const termSel = $('#term');
+      termSel.innerHTML = termsSortedDesc().map(x => `<option>${x}</option>`).join('');
+      termSel.value = "114 學年上學期";
+      updateGrades();
+    }
+    
+    function updateGrades() {
+      resetSelect('#grade');
+      resetSelect('#publisher');
+      resetSelect('#lesson');
+      $('#result-section').style.display = 'none';
+      $('#stats').style.display = 'none';
+      
+      const term = $('#term').value;
+      const grades = term ? Object.keys(CATALOG[term] || CATALOG[termCode(term)] || {}) : [];
+      $('#grade').innerHTML = '<option value="">請選擇年級</option>' + grades.map(g => `<option>${g}</option>`).join('');
+    }
+    
+    function updatePublishers() {
+      resetSelect('#publisher');
+      resetSelect('#lesson');
+      $('#result-section').style.display = 'none';
+      $('#stats').style.display = 'none';
+      
+      const term = $('#term').value, grade = $('#grade').value;
+      const pubs = (term && grade) ? Object.keys((CATALOG[term] || CATALOG[termCode(term)] || {})[grade] || {}) : [];
+      $('#publisher').innerHTML = '<option value="">請選擇版本</option>' + pubs.map(p => `<option>${p}</option>`).join('');
+    }
+    
+    async function updateLessons() {
+      resetSelect('#lesson');
+      $('#result-section').style.display = 'none';
+      $('#stats').style.display = 'none';
+      
+      const term = $('#term').value, grade = $('#grade').value, pub = $('#publisher').value;
+      if (!term || !grade || !pub) return;
+      
+      showLoading();
+      
+      const data = await ensureDataset(term, grade, pub);
+      window.CURRENT_DATA = data;
+      
+      let lessons = Object.keys(data || {});
+      if (!lessons.length) {
+        const n = expectedLessonsCount(grade, pub);
+        lessons = Array.from({ length: n }, (_, i) => `第${String(i + 1).padStart(2, '0')}課`);
+      }
+      
+      lessons.sort((a, b) => (parseInt(lessonNo2(a), 10) - parseInt(lessonNo2(b), 10)));
+      $('#lesson').innerHTML = '<option value="">請選擇課別</option>' + lessons.map(l => `<option>${l}</option>`).join('');
+      
+      $('#result-section').style.display = 'none';
+    }
+    
+    function render() {
+      const term = $('#term').value, grade = $('#grade').value, pub = $('#publisher').value, les = $('#lesson').value;
+      
+      if (!term || !grade || !pub || !les) {
+        $('#result-section').style.display = 'none';
+        $('#stats').style.display = 'none';
+        return;
+      }
+      
+      const chars = (window.CURRENT_DATA || {})[les] || [];
+      const id = pediaId(term, grade, pub, les);
+      const lessonURL = `https://pedia.cloud.edu.tw/Bookmark/TCollection?TextNameId=${id}`;
+      
+      // 顯示統計
+      if (chars.length > 0) {
+        $('#stats').textContent = `🎉 找到 ${chars.length} 個生字要學習！`;
+        $('#stats').style.display = 'block';
+      } else {
+        $('#stats').textContent = `📝 ${les} - 暫無生字資料`;
+        $('#stats').style.display = 'block';
+      }
+      
+      // 顯示結果區域
+      $('#result-section').style.display = 'block';
+      $('#result-section').innerHTML = `
+        <h2 class="result-title">📚 ${les} 學習內容</h2>
+        <div class="lesson-info">
+          <p><strong>📅 ${term}</strong> | <strong>👦👧 ${grade}</strong> | <strong>📖 ${pub}</strong></p>
+        </div>
+        <div id="links" class="links-section"></div>
+        <table id="words-table" class="words-table">
+          <thead>
+            <tr>
+              <th>🔤 生字</th>
+              <th>📖 成語學習</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      `;
+      
+      // 建立連結
+      const linksSection = $('#links');
+      linksSection.innerHTML = `
+        <a href="${lessonURL}" target="_blank" rel="noopener" class="link-button primary">
+          📖 查看課文內容
+        </a>
+      `;
+      
+      // 筆順練習連結
+      if (Array.isArray(chars) && chars.length) {
+        const allChars = chars.join('');
+        const firstId = allChars.codePointAt(0);
+        const strokeURL = `https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=${firstId}&WORD=${encodeURIComponent(allChars)}&ID2=1&TP=0`;
+        
+        linksSection.innerHTML += `
+          <a href="${strokeURL}" target="_blank" rel="noopener" class="link-button accent">
+            ✍️ 筆順練習
+          </a>
+        `;
+      }
+      
+      // 建立生字表格
+      const tbody = $('#words-table tbody');
+      tbody.innerHTML = '';
+      
+      if (chars.length > 0) {
+        for (const ch of chars) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${ch}</td>
+            <td><a href="${idiomLink(ch)}" target="_blank" rel="noopener">學習「${ch}」的成語</a></td>
+          `;
+          tbody.appendChild(tr);
+        }
+      } else {
+        // 如果沒有生字資料，顯示提示訊息
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td colspan="2" style="text-align: center; padding: 40px; color: var(--text-light); font-size: 18px;">
+            📝 此課暫無生字資料<br>
+            <small style="font-size: 14px; margin-top: 10px; display: block;">
+              請點擊上方「查看課文內容」連結查看完整內容
+            </small>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      }
+      
+      // 加入動畫效果
+      $('#result-section').classList.add('fade-in');
+    }
+    
+    // ===== 事件綁定 =====
+    $('#term').addEventListener('change', () => { updateGrades(); });
+    $('#grade').addEventListener('change', () => { updatePublishers(); });
+    $('#publisher').addEventListener('change', async () => { await updateLessons(); });
+    $('#lesson').addEventListener('change', render);
+    
+    // ===== 啟動應用 =====
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
