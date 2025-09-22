@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>📚 成語故事屋 📚</title>
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --primary-light: #81C784;
+      --secondary: #FF9800;
+      --accent: #E91E63;
+      --success: #10b981;
+      --bg: #FFF8E1;
+      --surface: #FFFFFF;
+      --text: #2E2E2E;
+      --text-muted: #666666;
+      --border: #E0E0E0;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #FFF8E1 0%, #F3E5F5 100%);
+      color: var(--text);
+      font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* 頂部導航 */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      padding: 1.5rem 0;
+      box-shadow: var(--shadow);
+    }
+
+    .navbar-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .navbar .subtitle {
+      margin: 0;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .back-btn {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* 主容器 */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* 成語選擇區域 */
+    .idiom-selector {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .selector-title {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .idiom-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .idiom-card {
+      background: linear-gradient(135deg, #FFF 0%, #F8F9FA 100%);
+      border: 2px solid var(--border);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .idiom-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      border-color: var(--primary);
+    }
+
+    .idiom-card.selected {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .idiom-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .idiom-meaning {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      line-height: 1.4;
+    }
+
+    /* 故事區域 */
+    .story-area {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+
+    .story-area.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .story-title {
+      font-size: 2rem;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .story-meaning {
+      background: linear-gradient(135deg, #E8F5E8 0%, #F0F8F0 100%);
+      border-left: 4px solid var(--primary);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .story-text {
+      background: #F8F9FA;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      line-height: 1.6;
+      border: 1px solid var(--border);
+    }
+
+    /* 四格漫畫 */
+    .comic-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .comic-panel {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .comic-panel:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .comic-emoji {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .comic-text {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    /* 動畫效果 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .navbar-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .navbar h1 {
+        font-size: 1.5rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      .idiom-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.8rem;
+      }
+
+      .idiom-card {
+        padding: 1rem;
+      }
+
+      .idiom-text {
+        font-size: 1rem;
+      }
+
+      .comic-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+
+      .comic-panel {
+        padding: 1rem;
+      }
+
+      .comic-emoji {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .comic-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 頂部導航 -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <div>
+        <h1>📚 成語故事屋 📚</h1>
+        <p class="subtitle">生動有趣的成語學習體驗</p>
+      </div>
+      <a href="index.html" class="back-btn">🏠 回到首頁</a>
+    </div>
+  </nav>
+
+  <!-- 主容器 -->
+  <div class="main-container">
+    <!-- 成語選擇區域 -->
+    <div class="idiom-selector">
+      <h2 class="selector-title">🎯 選擇一個成語開始學習</h2>
+      <div class="idiom-grid" id="idiomGrid">
+        <!-- 成語卡片將由 JavaScript 動態生成 -->
+      </div>
+    </div>
+
+    <!-- 故事區域 -->
+    <div class="story-area" id="storyArea">
+      <h2 class="story-title" id="storyTitle">成語故事</h2>
+      
+      <div class="story-meaning" id="storyMeaning">
+        <!-- 成語含義將由 JavaScript 動態生成 -->
+      </div>
+      
+      <div class="story-text" id="storyText">
+        <!-- 成語故事將由 JavaScript 動態生成 -->
+      </div>
+      
+      <div class="comic-strip" id="comicStrip">
+        <!-- 四格漫畫將由 JavaScript 動態生成 -->
+      </div>
+      
+    </div>
+
+  </div>
+
+  <script src="idiom-data.js"></script>
+  <script>
+    // 成語故事屋應用程式
+    let currentIdiom = null;
+
+    // 初始化
+    function init() {
+      renderIdiomGrid();
+    }
+
+    // 渲染成語網格
+    function renderIdiomGrid() {
+      const grid = document.getElementById('idiomGrid');
+      grid.innerHTML = '';
+      
+      Object.keys(idiomStories).forEach(idiom => {
+        const card = document.createElement('div');
+        card.className = 'idiom-card';
+        card.innerHTML = `
+          <div class="idiom-text">${idiom}</div>
+          <div class="idiom-meaning">${idiomStories[idiom].meaning}</div>
+        `;
+        card.addEventListener('click', () => selectIdiom(idiom, card));
+        grid.appendChild(card);
+      });
+    }
+
+    // 選擇成語
+    function selectIdiom(idiom, cardElement) {
+      currentIdiom = idiom;
+      
+      // 移除其他卡片的選中狀態
+      document.querySelectorAll('.idiom-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      cardElement.classList.add('selected');
+      
+      // 顯示故事區域
+      showStoryArea();
+    }
+
+    // 顯示故事區域
+    function showStoryArea() {
+      const storyArea = document.getElementById('storyArea');
+      const story = idiomStories[currentIdiom];
+      
+      // 更新標題
+      document.getElementById('storyTitle').textContent = currentIdiom;
+      
+      // 更新含義
+      document.getElementById('storyMeaning').innerHTML = `
+        <strong>📖 成語含義：</strong>${story.meaning}
+      `;
+      
+      // 更新故事
+      document.getElementById('storyText').innerHTML = `
+        <strong>📚 故事內容：</strong>${story.story}
+      `;
+      
+      // 更新四格漫畫
+      const comicStrip = document.getElementById('comicStrip');
+      comicStrip.innerHTML = '';
+      
+      story.panels.forEach((panel, index) => {
+        const panelDiv = document.createElement('div');
+        panelDiv.className = 'comic-panel fade-in';
+        panelDiv.style.animationDelay = `${index * 0.2}s`;
+        panelDiv.innerHTML = `
+          <span class="comic-emoji">${panel.emoji}</span>
+          <div class="comic-text">${panel.text}</div>
+        `;
+        comicStrip.appendChild(panelDiv);
+      });
+      
+      storyArea.classList.add('active');
+    }
+
+    // 事件綁定
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
