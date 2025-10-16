@@ -365,11 +365,7 @@
   <header class="header">
     <h1>🎓 國小生字學習樂園 🎓</h1>
     <p class="subtitle">📚 選擇你的年級和課本，一起學習生字吧！</p>
-    <div style="margin-top: 1rem;">
-      <a href="idiom-stories.html" style="background: rgba(255,255,255,0.2); color: white; padding: 0.5rem 1rem; border-radius: 20px; text-decoration: none; font-weight: 600; margin: 0 0.5rem; transition: all 0.3s ease;">
-        📚 成語故事屋
-      </a>
-    </div>
+    
   </header>
 
   <!-- 主要內容 -->
@@ -695,7 +691,11 @@
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td>${ch}</td>
-            <td><a href="${idiomLink(ch)}" target="_blank" rel="noopener">學習「${ch}」的成語</a></td>
+            <td>
+              <a href="${idiomLink(ch)}" target="_blank" rel="noopener">學習「${ch}」的成語</a>
+              &nbsp;|&nbsp;
+              <a href="idiom.html?keyword=${encodeURIComponent(ch)}" rel="noopener">成語學習與測驗</a>
+            </td>
           `;
           tbody.appendChild(tr);
         }
